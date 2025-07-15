@@ -47,12 +47,18 @@ def pump(to_pump, amount): # this is for manual pumping
 def calibrate(to_pump, amount):
 	print("Calibration on : ", to_pump, "Pumped: ", amount)
 	
+	print("RotPerAmA: ", rotationsPerAmountA)
+	print("RotPerAmC: ", rotationsPerAmountC)
+	
 	if to_pump == "a":
 		rotationsPerAmountA = CAL_ROTS/amount
 	elif to_pump == "c":
 		rotationsPerAmountC = CAL_ROTS/amount
 	else:
 		return False
+	
+	print("RotPerAmA: ", rotationsPerAmountA)
+	print("RotPerAmC: ", rotationsPerAmountC)
 	
 	saveState()
 	return True
