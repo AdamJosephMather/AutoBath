@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+	body {
+		background-color: #121212;
+		color: #e0e0e0;
+		font-family: Arial, sans-serif;
+		padding: 20px;
+	}
+	
+	label {
+		display: block;
+		margin-top: 10px;
+	}
+
+	input[type="text"],
+	select {
+		width: 200px;
+		padding: 8px;
+		background-color: #1e1e1e;
+		color: #e0e0e0;
+		border: 1px solid #444;
+		margin-top: 5px;
+	}
+
+	button {
+		margin-top: 15px;
+		background-color: #1f1f1f;
+		color: #e0e0e0;
+		border: 1px solid #444;
+		padding: 10px 20px;
+		cursor: pointer;
+	}
+
+	button:hover {
+		background-color: #333;
+	}
+	
+	a {
+		text-decoration: none;
+	}
+	
+	em {
+		color: #999;
+	}
+	
+	table {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	
+	td, th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+	}
+	
+	tr:nth-child(even) {
+		background-color: #1e1e1e;
+	}
+
+	tr:nth-child(odd) {
+		background-color: #181818;
+	}
+</style>
+
+<head>
+	<title>Training</title>
+	<script src="https://unpkg.com/htmx.org@1.9.2"></script>
+</head>
+<body>
+	<h1>Training - Auto Bath</h1>
+	
+	<form hx-post="/pump_calibration" hx-target="#result" hx-swap="innerHTML">
+		<label for="pump">Pump:</label>
+		<select name="pump" id="unit">
+			<option value="">-- Not Selected --</option>
+			<option value="A">A</option>
+			<option value="C">C</option>
+		</select>
+		<button type="submit">Start Pumping</button>
+	</form>
+	
+	<form hx-post="/submit_calibration" hx-target="#result" hx-swap="innerHTML">
+		<label for="input_value">Amount Pumped:</label>
+		<input type="number" name="input_value" id="input_value" />
+		
+		<select name="pump" id="unit">
+			<option value="">-- Not Selected --</option>
+			<option value="A">A</option>
+			<option value="C">C</option>
+		</select>
+		
+		<button type="submit">Submit</button>
+	</form>
+	
+	<div id="result" style="margin-top: 1em;"></div>
+</body>
+</html>

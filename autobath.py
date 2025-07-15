@@ -3,6 +3,7 @@ from datetime import datetime
 
 import TrainingDataset
 import SensorReader
+import PumpControl
 
 app = Flask(__name__)
 
@@ -13,6 +14,40 @@ def index():
 @app.route('/training')
 def training():
 	return render_template('training.html')
+
+@app.route('/calibration')
+def calibration():
+	return render_template('calibration.html')
+
+@app.route('/pump_calibration', methods=['POST'])
+def pump_calibration():
+	pump = request.form.get('pump', '')
+	
+	if not pump:
+		return "<p style='color: red;'>Missing pump.</p>", 400
+	
+	if not PumpControl.turn_pump(pump, PumpControl.CAL_ROTS):
+		return "<p style='color: red;'>Pumping failed.</p>", 400
+	
+	return "<p>Pumping Calibration.</p>", 200
+
+@app.route('/submit_calibration', methods=['POST'])
+def submit_calibration():
+	pump = request.form.get('pump', '')
+	value = request.form.get('input_value', '')
+	
+	if not pump or not value:
+		return "<p style='color: red;'>Both fields are required.</p>", 400
+	
+	try:
+		val = float(value)
+	except:
+		return "<p style='color: red;'>Could not convert amount to float.</p>", 400
+	
+	if not PumpControl.calibrate(pump, val):
+		return "<p style='color: red;'>Failed to calibrate.</p>", 400
+	
+	return "<p>Calibrated.</p>", 200
 
 @app.route('/submit_titration', methods=['POST'])
 def submit_titration():
@@ -73,6 +108,42 @@ def html_widget():
 				<td>{vis}</td>
 			</tr>
 		</table>"""
+
+@app.route('/manual_a_dose')
+def manual_a_dose():
+	value = request.form.get('input_a_value', '').strip()
+	
+	if not value:
+		return "<p style='color: red;'>Required feild.</p>", 400
+	
+	try:
+		flt_val = float(value)
+	except:
+		return "<p style='color: red;'>Requires a number.</p>", 400
+	
+	# here we need to call our function to pump flt_val of fluid
+	
+	PumpControl.pump('a', flt_val)
+	
+	return "<p>Pumping.</p>"
+
+
+@app.route('/manual_c_dose')
+def manual_c_dose():
+	value = request.form.get('input_c_value', '').strip()
+	
+	if not value:
+		return "<p style='color: red;'>Required feild.</p>", 400
+	
+	try:
+		flt_val = float(value)
+	except:
+		return "<p style='color: red;'>Requires a number.</p>", 400
+	
+	# here we need to call our function to pump flt_val of fluid
+	
+	PumpControl.pump('c', flt_val)
+	return "<p>Pumping.</p>"
 
 if __name__ == '__main__':
 	app.run(port=9000, host="0.0.0.0", debug=True)
