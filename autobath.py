@@ -21,7 +21,7 @@ def calibration():
 
 @app.route('/pump_calibration', methods=['POST'])
 def pump_calibration():
-	pump = request.form.get('pump', '')
+	pump = request.form.get('pump', '').lower()
 	
 	if not pump:
 		return "<p style='color: red;'>Missing pump.</p>", 400
@@ -33,7 +33,7 @@ def pump_calibration():
 
 @app.route('/submit_calibration', methods=['POST'])
 def submit_calibration():
-	pump = request.form.get('pump_2', '')
+	pump = request.form.get('pump_2', '').lower()
 	value = request.form.get('input_value', '')
 	
 	if not pump or not value:
