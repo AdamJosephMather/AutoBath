@@ -48,9 +48,9 @@ def calibrate(to_pump, amount):
 	print("Calibration on : ", to_pump, "Pumped: ", amount)
 	
 	if to_pump == "a":
-		rotationsPerAmountA = rotations/amount
+		rotationsPerAmountA = CAL_ROTS/amount
 	elif to_pump == "c":
-		rotationsPerAmountC = rotations/amount
+		rotationsPerAmountC = CAL_ROTS/amount
 	else:
 		return False
 	
