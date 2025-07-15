@@ -77,15 +77,16 @@
 		<em>Waiting for update...</em>
 	</div>
 	
-	<form
-		hx-post="/manual_a_dose"
-		hx-target="#result"
-		hx-swap="innerHTML"
-		onsubmit="return validateForm();"
-	>
-		
+	<form hx-post="/manual_a_dose" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
 		<label for="input_value">Amount of A:</label>
 		<input type="number" name="input_a_value" id="input_a_value" />
+		
+		<button type="submit">Submit</button>
+	</form>
+	
+	<form hx-post="/manual_c_dose" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
+		<label for="input_value">Amount of C:</label>
+		<input type="number" name="input_c_value" id="input_c_value" />
 		
 		<button type="submit">Submit</button>
 	</form>
