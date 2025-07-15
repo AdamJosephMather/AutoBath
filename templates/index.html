@@ -78,6 +78,17 @@
 	</div>
 	
 	<hr>
+	<h2>Control</h2>
+	
+	<form hx-post="/start_control" hx-target="#result" hx-swap="innerHTML">
+		<button type="submit">Submit</button>
+	</form>
+	
+	<form hx-post="/end_control" hx-target="#result" hx-swap="innerHTML">
+		<button type="submit">Submit</button>
+	</form>
+	
+	<hr>
 	<h2>Manual Dose</h2>
 	
 	<form hx-post="/manual_a_dose" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
@@ -86,6 +97,8 @@
 		
 		<button type="submit">Submit</button>
 	</form>
+	
+	<hr>
 	
 	<form hx-post="/manual_c_dose" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
 		<label for="input_value">Amount of C:</label>

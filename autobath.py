@@ -5,6 +5,28 @@ import TrainingDataset
 import SensorReader
 import PumpControl
 
+
+FILE_NAME = "AutoBathState.mather"
+
+FILE_LOC = __file__.replace("\\", "/") # This is the way to make sure it goes wherever the script is
+FILE_LOC = FILE_LOC.split("/")
+FILE_LOC = "/".join(FILE_LOC[:-1])
+
+FILE_PATH = FILE_LOC + "/" + FILE_NAME
+
+isMonitoring = False
+
+if os.path.exists(FILE_PATH):
+	with open(FILE_PATH, "r") as f:
+		for line in f.readlines():
+			k,v = line.split(':')
+			if k == "isMonitoring":
+				isMonitoring = bool(v)
+
+def saveAutoBathState():
+	with open(FILE_PATH, "w") as f:
+		f.write("\n".join( [ ":".join([str(j) for j in i]) for i in [ ("isMonitoring", isMonitoring) ] ]))
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -18,6 +40,23 @@ def training():
 @app.route('/calibration')
 def calibration():
 	return render_template('calibration.html')
+
+
+@app.route('/start_control', methods=['POST'])
+def start_control():
+	if isMonitoring:
+		return "<p style='color: red;'>Already Monitoring.</p>", 400
+	
+	isMonitoring = True
+	return "<p>Started Monitoring.</p>", 200
+
+@app.route('/end_control', methods=['POST'])
+def end_control():
+	if not isMonitoring:
+		return "<p style='color: red;'>Already Monitoring.</p>", 400
+	
+	isMonitoring = False
+	return "<p>Done Monitoring.</p>", 200
 
 @app.route('/pump_calibration', methods=['POST'])
 def pump_calibration():
@@ -107,7 +146,8 @@ def html_widget():
 				<td>{ir}</td>
 				<td>{vis}</td>
 			</tr>
-		</table>"""
+		</table>
+		<p>Currently Monitoring: {isMonitoring}</p>"""
 
 @app.route('/manual_a_dose')
 def manual_a_dose():

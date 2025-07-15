@@ -1,7 +1,7 @@
 import time
 import os
 
-CAL_ROTS = 10 # number of rotations to calibrate on
+CAL_ROTS = 100 # number of rotations to calibrate on
 
 FILE_NAME = "PumpControlState.mather"
 
@@ -14,6 +14,10 @@ FILE_PATH = FILE_LOC + "/" + FILE_NAME
 rotationsPerAmountA = 1
 rotationsPerAmountC = 1
 
+currentPumpSpeedA = 0
+currentPumpSpeedB = 0
+isPumping = False
+
 if os.path.exists(FILE_PATH):
 	with open(FILE_PATH, "r") as f:
 		for line in f.readlines():
@@ -22,6 +26,11 @@ if os.path.exists(FILE_PATH):
 				rotationsPerAmountA = float(v)
 			elif k == "rotationsPerAmountC":
 				rotationsPerAmountC = float(v)
+			elif k == "currentPumpSpeedA":
+				currentPumpSpeedA = float(v)
+			elif k == "currentPumpSpeedC":
+				currentPumpSpeedC = float(v)
+			
 
 def saveState():
 	with open(FILE_PATH, "w") as f:
