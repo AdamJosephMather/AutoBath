@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+
+<style>
+	body {
+		background-color: #121212;
+		color: #e0e0e0;
+		font-family: Arial, sans-serif;
+		padding: 20px;
+	}
+	
+	label {
+		display: block;
+		margin-top: 10px;
+	}
+
+	input[type="text"],
+	select {
+		width: 200px;
+		padding: 8px;
+		background-color: #1e1e1e;
+		color: #e0e0e0;
+		border: 1px solid #444;
+		margin-top: 5px;
+	}
+
+	button {
+		margin-top: 15px;
+		background-color: #1f1f1f;
+		color: #e0e0e0;
+		border: 1px solid #444;
+		padding: 10px 20px;
+		cursor: pointer;
+	}
+
+	button:hover {
+		background-color: #333;
+	}
+	
+	a {
+		text-decoration: none;
+	}
+	
+	em {
+		color: #999;
+	}
+	
+	table {
+		font-family: arial, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
+	}
+	
+	td, th {
+		border: 1px solid #dddddd;
+		text-align: left;
+		padding: 8px;
+	}
+	
+	tr:nth-child(even) {
+		background-color: #1e1e1e;
+	}
+
+	tr:nth-child(odd) {
+		background-color: #181818;
+	}
+</style>
+
+<head>
+	<title>Training</title>
+	<script src="https://unpkg.com/htmx.org@1.9.2"></script>
+</head>
+<body>
+	<h1>Training - Auto Bath</h1>
+	
+	<form
+		hx-post="/submit_titration"
+		hx-target="#result"
+		hx-swap="innerHTML"
+		onsubmit="return validateForm();"
+	>
+		
+		<label for="input_value">Value:</label>
+		<input type="text" name="input_value" id="input_value" />
+
+		<label for="unit">Unit:</label>
+		<select name="unit" id="unit">
+			<option value="">-- Not Selected --</option>
+			<option value="percentage">Percentage</option>
+			<option value="mils">Mils</option>
+		</select>
+
+		<button type="submit">Submit</button>
+	</form>
+	
+	<div
+		id="result"
+		style="margin-top: 1em;"
+		hx-on="htmx:afterSwap: htmx.trigger('#titration-data','refresh')">
+	</div>
+	
+	<div id="titration-data" hx-get="/titration_data" hx-trigger="load, refresh" hx-swap="innerHTML">
+		<em>Waiting for data...</em>
+	</div>
+</body>
+
+<script>
+	function validateForm() {
+		const value = document.getElementById("input_value").value.trim();
+		const unit = document.getElementById("unit").value;
+		if (!value || !unit) {
+			alert("Please enter a value and select a unit.");
+			return false;
+		}
+		return true;
+	}
+</script>
+
+</html>

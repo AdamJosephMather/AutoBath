@@ -1,0 +1,18 @@
+mqtt
+pcl
+
+Right now we take titrations and use that to determine the A and C to add (we're ignoring amonia for now)
+
+Light Sensor: TSL 2591
+
+Tasks:
+	# Read from the sensor(s)
+	Output from sensors to database
+	Create a webpage (HTMX) to view and access the data as well as input:
+		Titration results
+		
+
+10.2 mils
+		
+Last time:
+ssh pi@192.168.1.220
