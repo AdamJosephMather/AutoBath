@@ -44,6 +44,8 @@ def calibration():
 
 @app.route('/start_control', methods=['POST'])
 def start_control():
+	global isMonitoring
+	
 	if isMonitoring:
 		return "<p style='color: red;'>Already Monitoring.</p>", 400
 	
@@ -52,6 +54,8 @@ def start_control():
 
 @app.route('/end_control', methods=['POST'])
 def end_control():
+	global isMonitoring
+	
 	if not isMonitoring:
 		return "<p style='color: red;'>Already Monitoring.</p>", 400
 	
