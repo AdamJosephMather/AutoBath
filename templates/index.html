@@ -77,6 +77,9 @@
 		<em>Waiting for update...</em>
 	</div>
 	
+	<hr>
+	<h2>Manual Dose</h2>
+	
 	<form hx-post="/manual_a_dose" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
 		<label for="input_value">Amount of A:</label>
 		<input type="number" name="input_a_value" id="input_a_value" />
@@ -92,6 +95,9 @@
 	</form>
 	
 	<div id="result" style="margin-top: 1em;"</div>
+	
+	<hr>
+	<h2>Links</h2>
 	
 	<a href="/training">
 		<button>Training Page</button>
