@@ -45,6 +45,8 @@ def pump(to_pump, amount): # this is for manual pumping
 	return True
 
 def calibrate(to_pump, amount):
+	global rotationsPerAmountA, rotationsPerAmountC
+	
 	print("Calibration on : ", to_pump, "Pumped: ", amount)
 	
 	print("RotPerAmA: ", rotationsPerAmountA)
