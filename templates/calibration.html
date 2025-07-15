@@ -75,7 +75,7 @@
 	
 	<form hx-post="/pump_calibration" hx-target="#result" hx-swap="innerHTML">
 		<label for="pump">Pump:</label>
-		<select name="pump" id="unit">
+		<select name="pump" id="pump">
 			<option value="">-- Not Selected --</option>
 			<option value="A">A</option>
 			<option value="C">C</option>
@@ -87,7 +87,8 @@
 		<label for="input_value">Amount Pumped:</label>
 		<input type="number" name="input_value" id="input_value" />
 		
-		<select name="pump" id="unit">
+		<label for="pump_2">Pump:</label>
+		<select name="pump_2" id="pump_2">
 			<option value="">-- Not Selected --</option>
 			<option value="A">A</option>
 			<option value="C">C</option>

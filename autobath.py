@@ -29,7 +29,7 @@ def pump_calibration():
 	if not PumpControl.turn_pump(pump, PumpControl.CAL_ROTS):
 		return "<p style='color: red;'>Pumping failed.</p>", 400
 	
-	return "<p>Pumping Calibration.</p>", 200
+	return "<p>Pumping.</p>", 200
 
 @app.route('/submit_calibration', methods=['POST'])
 def submit_calibration():
