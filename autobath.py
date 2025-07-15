@@ -47,20 +47,20 @@ def start_control():
 	global isMonitoring
 	
 	if isMonitoring:
-		return "<p style='color: red;'>Already Monitoring.</p>", 400
+		return "<p style='color: red;'>Already Monitoring. (please refresh)</p>", 400
 	
 	isMonitoring = True
-	return "<p>Started Monitoring.</p>", 200
+	return html_mainscreen(), 200
 
 @app.route('/end_control', methods=['POST'])
 def end_control():
 	global isMonitoring
 	
 	if not isMonitoring:
-		return "<p style='color: red;'>Already Monitoring.</p>", 400
+		return "<p style='color: red;'>Was Not Monitoring. (please refresh)</p>", 400
 	
 	isMonitoring = False
-	return "<p>Done Monitoring.</p>", 200
+	return html_mainscreen(), 200
 
 @app.route('/pump_calibration', methods=['POST'])
 def pump_calibration():
