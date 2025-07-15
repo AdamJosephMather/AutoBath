@@ -33,7 +33,7 @@ def pump_calibration():
 
 @app.route('/submit_calibration', methods=['POST'])
 def submit_calibration():
-	pump = request.form.get('pump', '')
+	pump = request.form.get('pump_2', '')
 	value = request.form.get('input_value', '')
 	
 	if not pump or not value:
