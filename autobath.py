@@ -4,7 +4,7 @@ from datetime import datetime
 import TrainingDataset
 import SensorReader
 import PumpControl
-
+import os
 
 FILE_NAME = "AutoBathState.mather"
 
