@@ -77,8 +77,35 @@
 		<em>Waiting for update...</em>
 	</div>
 	
+	<form
+		hx-post="/manual_a_dose"
+		hx-target="#result"
+		hx-swap="innerHTML"
+		onsubmit="return validateForm();"
+	>
+		
+		<label for="input_value">Amount of A:</label>
+		<input type="number" name="input_a_value" id="input_a_value" />
+		
+		<button type="submit">Submit</button>
+	</form>
+	
+	<div id="result" style="margin-top: 1em;"</div>
+	
 	<a href="/training">
 		<button>Training Page</button>
 	</a>
 </body>
+
+<script>
+	function validateForm() {
+		const value = document.getElementById("input_value").value.trim();
+		const unit = document.getElementById("unit").value;
+		if (!value || !unit) {
+			alert("Please enter a value and select a unit.");
+			return false;
+		}
+		return true;
+	}
+</script>
 </html>
