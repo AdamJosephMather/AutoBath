@@ -153,6 +153,48 @@ def html_widget():
 		</table>
 		<p>Currently Monitoring: {isMonitoring}</p>"""
 
+@app.route('/html_mainscreen')
+def html_mainscreen():
+	if isMonitoring:
+		return f"""
+		<h2>AUTO</h2>
+		
+		<form hx-post="/end_control" hx-target="#mainscreen" hx-swap="innerHTML">
+			<button type="submit">Disable Auto</button>
+		</form>
+		"""
+	else:
+		return f"""
+		<h2>MANUAL</h2>
+		
+		<form hx-post="/start_control" hx-target="#mainscreen" hx-swap="innerHTML">
+			<button type="submit">Switch to Auto</button>
+		</form>
+		
+		<hr>
+		
+		<form hx-post="/manual_a_dose" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
+			<label for="input_value">Amount of A:</label>
+			<input type="number" name="input_a_value" id="input_a_value" />
+			
+			<button type="submit">Submit</button>
+		</form>
+		
+		<hr>
+		
+		<form hx-post="/manual_c_dose" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
+			<label for="input_value">Amount of C:</label>
+			<input type="number" name="input_c_value" id="input_c_value" />
+			
+			<button type="submit">Submit</button>
+		</form>
+		
+		<a href="/calibration">
+			<button>Calibration Page</button>
+		</a>
+		"""
+
+
 @app.route('/manual_a_dose')
 def manual_a_dose():
 	value = request.form.get('input_a_value', '').strip()

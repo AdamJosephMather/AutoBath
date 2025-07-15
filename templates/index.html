@@ -77,48 +77,17 @@
 		<em>Waiting for update...</em>
 	</div>
 	
-	<hr>
-	<h2>Control</h2>
-	
-	<form hx-post="/start_control" hx-target="#result" hx-swap="innerHTML">
-		<button type="submit">Start Control</button>
-	</form>
-	
-	<form hx-post="/end_control" hx-target="#result" hx-swap="innerHTML">
-		<button type="submit">End Control</button>
-	</form>
+	<div id="mainscreen" hx-get="/html_mainscreen" hx-trigger="load" hx-swap="innerHTML">
+		<em>Waiting for update...</em>
+	</div>
 	
 	<hr>
-	<h2>Manual Dose</h2>
-	
-	<form hx-post="/manual_a_dose" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
-		<label for="input_value">Amount of A:</label>
-		<input type="number" name="input_a_value" id="input_a_value" />
-		
-		<button type="submit">Submit</button>
-	</form>
-	
-	<hr>
-	
-	<form hx-post="/manual_c_dose" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
-		<label for="input_value">Amount of C:</label>
-		<input type="number" name="input_c_value" id="input_c_value" />
-		
-		<button type="submit">Submit</button>
-	</form>
-	
-	<div id="result" style="margin-top: 1em;"></div>
-	
-	<hr>
-	<h2>Links</h2>
-	
 	<a href="/training">
 		<button>Training Page</button>
 	</a>
 	
-	<a href="/calibration">
-		<button>Calibration Page</button>
-	</a>
+	<hr>
+	<div id="result" style="margin-top: 1em;"></div>
 </body>
 
 <script>

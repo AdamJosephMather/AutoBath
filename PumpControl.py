@@ -36,7 +36,7 @@ def saveState():
 	with open(FILE_PATH, "w") as f:
 		f.write("\n".join( [ ":".join([str(j) for j in i]) for i in [ ("rotationsPerAmountA", rotationsPerAmountA), ("rotationsPerAmountC", rotationsPerAmountC) ] ]))
 
-def turn_pump(to_pump, rotations):
+def turn_pump(to_pump, rotations): # only called outside of the auto mode
 	# to_pump is a string 'a' or 'c'
 	# rotations is the number of turns
 	# here we rotate the pump (coming soon)
