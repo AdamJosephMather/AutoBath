@@ -6,6 +6,10 @@ import os
 import datetime
 import time
 
+response = None
+
+
+
 FILE_NAME = "Training.csv"
 
 FILE_LOC = __file__.replace("\\", "/") # This is the way to make sure it goes wherever the script is
@@ -55,11 +59,11 @@ def writeReading(mto_str: str, val: str, unit: str):
 	
 	timeout = time.time() + 5
 	while time.time() < timeout:
+		print(response)
+		
 		if response is not None:
 			break
 		time.sleep(0.1)
-	
-	client.loop_stop()
 	
 	if response is not None:
 		lux, ir, vis = response
@@ -112,21 +116,15 @@ DEVICEID = "pi-1"
 CMD_TOPIC  = f"devices/{DEVICEID}/commands"
 RESP_TOPIC = f"devices/{DEVICEID}/responses"
 
-# Global to hold the incoming response
-response = None
 
 def on_connect(client, userdata, flags, rc):
 	print("Connected to broker, subscribing to responses…")
 	client.subscribe(RESP_TOPIC)
 
 def on_message(client, userdata, msg):
-	print("Client resp, ", userdata, msg.payload)
-	
 	global response
 	payload = json.loads(msg.payload)
-	# Match the request_id
-	if payload.get("request_id") == userdata["req_id"]:
-		response = payload["data"]
+	response = payload["data"]
 
 client = mqtt.Client(userdata={"req_id": None})
 client.reconnect_delay_set(min_delay=1, max_delay=120)
