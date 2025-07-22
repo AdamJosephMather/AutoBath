@@ -73,10 +73,12 @@
 <body>
 	<h1>Training - Auto Bath</h1>
 	
-	<form hx-post="/submit_titration" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();" >
-		
-		<label for="mto_value">MTO:</label>
-		<input type="number" name="mto_value" id="input_value" />
+	<form
+		hx-post="/submit_titration"
+		hx-target="#result"
+		hx-swap="innerHTML"
+		onsubmit="return validateForm();"
+	>
 		
 		<label for="input_value">Value:</label>
 		<input type="number" name="input_value" id="input_value" />

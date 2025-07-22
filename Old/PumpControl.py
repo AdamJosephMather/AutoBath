@@ -1,6 +1,8 @@
 import time
 import os
 
+import MTOTracker
+
 CAL_ROTS = 100 # number of rotations to calibrate on
 
 FILE_NAME = "PumpControlState.mather"
@@ -36,7 +38,7 @@ def saveState():
 	with open(FILE_PATH, "w") as f:
 		f.write("\n".join( [ ":".join([str(j) for j in i]) for i in [ ("rotationsPerAmountA", rotationsPerAmountA), ("rotationsPerAmountC", rotationsPerAmountC) ] ]))
 
-def turn_pump(to_pump, rotations): # only called outside of the auto mode
+def turn_pump(to_pump, rotations):
 	# to_pump is a string 'a' or 'c'
 	# rotations is the number of turns
 	# here we rotate the pump (coming soon)
@@ -51,6 +53,10 @@ def pump(to_pump, amount): # this is for manual pumping
 		return False
 	
 	turn_pump(to_pump, rots)
+	
+	if to_pump == "a":
+		deposited(amount)
+	
 	return True
 
 def calibrate(to_pump, amount):
