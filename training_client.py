@@ -14,7 +14,7 @@ def on_connect(client, userdata, flags, rc):
 	client.subscribe(CMD_TOPIC)
 
 def on_message(client, userdata, msg):
-	print("OnMessage: " + msg.payload)
+	print("OnMessage: ", msg.payload)
 	
 	try:
 		payload = json.loads(msg.payload)
