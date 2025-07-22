@@ -6,6 +6,8 @@ import os
 import datetime
 import time
 
+import threading
+
 response = None
 
 
@@ -18,6 +20,10 @@ FILE_LOC = "/".join(FILE_LOC[:-1])
 
 FILE_PATH = FILE_LOC + "/" + FILE_NAME
 
+
+FILE_NAME_TWO = "ConstantData.csv"
+FILE_PATH_TWO = FILE_LOC + "/" + FILE_NAME_TWO
+
 def ensureExists():
 	if not os.path.exists(FILE_PATH):
 		with open(FILE_PATH, "w") as f:
@@ -25,9 +31,54 @@ def ensureExists():
 
 ensureExists()
 
-def writeReading(mto_str: str, val: str, unit: str):
+def getData():
 	global response
 	
+	response = None
+	
+	req_id = str(uuid.uuid4())
+	client.user_data_set({"req_id": req_id})
+	
+	cmd = {"cmd": "read_data", "request_id": req_id}
+	client.publish(CMD_TOPIC, json.dumps(cmd))
+	print(f"Sent request {req_id}, waiting for reply…")
+	
+	timeout = time.time() + 10 # the ph and temp reads take longer
+	while time.time() < timeout:
+		if response is not None:
+			break
+		time.sleep(0.1)
+	
+	if response is not None:
+		lux, ir, vis, ph, temp = response
+		print("Received:", lux, ir, vis, ph, temp)
+		return lux, ir, vis, ph, temp
+	else:
+		print("No response received within timeout.")
+		raise RuntimeError("Data was not received in timeout (0_0)")
+
+def constantRead():
+	while True:
+		try:
+			lux, ir, vis, ph, temp = getData()
+		except RuntimeError:
+			continue
+		
+		t = time.time()
+		
+		if not os.path.exists(FILE_PATH_TWO):
+			with open(FILE_PATH_TWO, "w") as f:
+				f.write("UNIX_TIME,LUX,IR,VIS,PH,TEMP\n")
+		
+		with open(FILE_PATH_TWO, "a") as f:
+			f.write(f"{t},{lux},{ir},{vis},{ph},{temp}\n")
+		
+		time.sleep(60)
+
+#def getReadForTime():
+#	
+
+def writeReading(mto_str: str, val: str, unit: str):
 	unit = unit.lower()
 	
 	try:
@@ -48,30 +99,10 @@ def writeReading(mto_str: str, val: str, unit: str):
 	
 	### GET THE LIGHT VALUES ###
 	
-	response = None
-	
-	req_id = str(uuid.uuid4())
-	client.user_data_set({"req_id": req_id})
-	
-	cmd = {"cmd": "read_data", "request_id": req_id}
-	client.publish(CMD_TOPIC, json.dumps(cmd))
-	print(f"Sent request {req_id}, waiting for reply…")
-	
-	timeout = time.time() + 5
-	while time.time() < timeout:
-		print(response)
-		
-		if response is not None:
-			break
-		time.sleep(0.1)
-	
-	if response is not None:
-		lux, ir, vis, ph, temp = response
-		print("Received:", lux, ir, vis, ph, temp)
-	else:
-		print("No response received within timeout.")
+	try:
+		lux, ir, vis, ph, temp = getData()
+	except RuntimeError as e:
 		return False
-	
 	
 	### GET TIME AND WRITE DATA ###
 	
@@ -97,7 +128,17 @@ def getDataForHTMX():
 			if "DATE,TIME,SAM" in line: # it's the first line
 				continue
 			
-			data.append(line.split(","))
+			linedataraw = line.split(",")
+			linedata = []
+			
+			for itm in linedataraw:
+				try:
+					t = float(itm)
+					linedata.append(str(round(t, 3)))
+				except:
+					linedata.append(itm)
+			
+			data.append(linedata)
 	
 	data.append("DATE,TIME,SAMPLE_TIME,MTO,PERCENT,MIL,LUX,IR,VIS,PH,TEMP".split(','))
 	
@@ -179,9 +220,8 @@ def titration_data():
 	
 	return out
 
-def recordData():
-	while True:
-		time.sleep(60)
-
 if __name__ == '__main__':
+	t = threading.Thread(target=constantRead())
+	t.start()
+	
 	app.run(port=9000, host="0.0.0.0", debug=True)

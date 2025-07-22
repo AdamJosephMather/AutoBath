@@ -73,14 +73,16 @@
 <body>
 	<h1>Training - Auto Bath</h1>
 	
-	<form hx-post="/submit_titration" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();" >
+	<form hx-post="/submit_titration" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();">
+		<label for="sample_value">Time sample was taken:</label>
+		<input type="time" id="sample_value" name="sample_time" step="60" required/>
 		
 		<label for="mto_value">MTO:</label>
-		<input type="number" name="mto_value" id="input_value" step="any" />
+		<input type="number" name="mto_value" id="input_value" step="any"/>
 		
 		<label for="input_value">Value:</label>
-		<input type="number" name="input_value" id="input_value" step="any" />
-
+		<input type="number" name="input_value" id="input_value" step="any"/>
+		
 		<label for="unit">Unit:</label>
 		<select name="unit" id="unit">
 			<option value="">-- Not Selected --</option>
