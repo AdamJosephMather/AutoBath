@@ -76,10 +76,10 @@
 	<form hx-post="/submit_titration" hx-target="#result" hx-swap="innerHTML" onsubmit="return validateForm();" >
 		
 		<label for="mto_value">MTO:</label>
-		<input type="number" name="mto_value" id="input_value" />
+		<input type="number" name="mto_value" id="input_value" step="any" />
 		
 		<label for="input_value">Value:</label>
-		<input type="number" name="input_value" id="input_value" />
+		<input type="number" name="input_value" id="input_value" step="any" />
 
 		<label for="unit">Unit:</label>
 		<select name="unit" id="unit">

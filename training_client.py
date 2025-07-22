@@ -23,11 +23,11 @@ def on_message(client, userdata, msg):
 		return
 	
 	if payload.get("cmd") == "read_data":
-		lux, ir, vis = SensorReader.readData()
+		lux, ir, vis, ph, temp = SensorReader.readData()
 
 		response = {
 			"request_id": payload['request_id'],
-			"data": [lux, ir, vis]
+			"data": [lux, ir, vis, ph, temp]
 		}
 		
 		client.publish(RESP_TOPIC, json.dumps(response))

@@ -21,7 +21,7 @@ FILE_PATH = FILE_LOC + "/" + FILE_NAME
 def ensureExists():
 	if not os.path.exists(FILE_PATH):
 		with open(FILE_PATH, "w") as f:
-			f.write("DATE,TIME,MTO,PERCENT,MIL,LUX,IR,VIS\n")
+			f.write("DATE,TIME,SAMPLE_TIME,MTO,PERCENT,MIL,LUX,IR,VIS,PH,TEMP\n")
 
 ensureExists()
 
@@ -66,8 +66,8 @@ def writeReading(mto_str: str, val: str, unit: str):
 		time.sleep(0.1)
 	
 	if response is not None:
-		lux, ir, vis = response
-		print("Received:", lux, ir, vis)
+		lux, ir, vis, ph, temp = response
+		print("Received:", lux, ir, vis, ph, temp)
 	else:
 		print("No response received within timeout.")
 		return False
@@ -77,9 +77,10 @@ def writeReading(mto_str: str, val: str, unit: str):
 	
 	dT = datetime.datetime.now().strftime("%Y-%m-%d")
 	tM = datetime.datetime.now().strftime("%H:%M:%S")
+	rT = datetime.datetime.now().strftime("%H:%M:%S")
 	
 	with open(FILE_PATH, "a") as f:
-		f.write(f"{dT},{tM},{mto},{per},{mils},{lux},{ir},{vis}\n")
+		f.write(f"{dT},{tM},{rT},{mto},{per},{mils},{lux},{ir},{vis},{ph},{temp}\n")
 	
 	return True
 
@@ -93,12 +94,12 @@ def getDataForHTMX():
 			if line.strip() == "":
 				continue
 			
-			if "DATE,TIME,MTO" in line:
+			if "DATE,TIME,SAM" in line: # it's the first line
 				continue
 			
 			data.append(line.split(","))
 	
-	data.append("DATE,TIME,MTO,PERCENT,MIL,LUX,IR,VIS".split(','))
+	data.append("DATE,TIME,SAMPLE_TIME,MTO,PERCENT,MIL,LUX,IR,VIS,PH,TEMP".split(','))
 	
 	return data
 
@@ -177,6 +178,10 @@ def titration_data():
 	out += "\n</table>"
 	
 	return out
+
+def recordData():
+	while True:
+		time.sleep(60)
 
 if __name__ == '__main__':
 	app.run(port=9000, host="0.0.0.0", debug=True)
