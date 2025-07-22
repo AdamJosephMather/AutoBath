@@ -27,7 +27,7 @@ sensor = adafruit_tsl2591.TSL2591(i2c)
 
 def readData():
 	try:
-		ph_val = float(ph.query("R", processing_delay=2500).data.decode())
+		ph_val = float(ph.query("R", processing_delay=3500).data.decode())
 	except Exception as e:
 		print(e)
 		ph_val = -999 # just in case
