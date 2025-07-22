@@ -21,16 +21,18 @@ def ensureExists():
 
 ensureExists()
 
-def writeReading(mto_str, val, unit):
+def writeReading(mto_str: str, val: str, unit: str):
 	global response
+	
+	unit = unit.lower()
 	
 	try:
 		mto = float(mto_str)
 		v = float(val)
-		if unit == "Mils":
+		if unit == "mils":
 			mils = val
 			per = (val / 10.2) * 100
-		elif unit == "Percentage":
+		elif unit == "percentage":
 			per = val
 			mils = (per / 100) * 10.2
 		else:
