@@ -14,6 +14,8 @@ def on_connect(client, userdata, flags, rc):
 	client.subscribe(CMD_TOPIC)
 
 def on_message(client, userdata, msg):
+	print("OnMessage: " + msg.payload)
+	
 	try:
 		payload = json.loads(msg.payload)
 	except json.JSONDecodeError:
@@ -24,7 +26,7 @@ def on_message(client, userdata, msg):
 		lux, ir, vis = SensorReader.readData()
 
 		response = {
-			"request_id": payload.get("request_id"),
+			"request_id": payload['request_id'],
 			"data": [lux, ir, vis]
 		}
 		

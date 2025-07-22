@@ -30,11 +30,11 @@ def writeReading(mto_str: str, val: str, unit: str):
 		mto = float(mto_str)
 		v = float(val)
 		if unit == "mils":
-			mils = val
-			per = (val / 10.2) * 100
+			mils = v
+			per = (v / 10.2) * 100
 		elif unit == "percentage":
-			per = val
-			mils = (per / 100) * 10.2
+			per = v
+			mils = (v / 100) * 10.2
 		else:
 			print(f"Got unexpected unit: {unit}")
 			return False
@@ -63,7 +63,7 @@ def writeReading(mto_str: str, val: str, unit: str):
 	
 	if response is not None:
 		lux, ir, vis = response
-		print("Received:", num1, num2)
+		print("Received:", lux, ir, vis)
 	else:
 		print("No response received within timeout.")
 		return False
@@ -75,7 +75,9 @@ def writeReading(mto_str: str, val: str, unit: str):
 	tM = datetime.datetime.now().strftime("%H:%M:%S")
 	
 	with open(FILE_PATH, "a") as f:
-		f.write(f"{dT},{tM},{mto},{per},{mil},{lux},{ir},{vis}\n")
+		f.write(f"{dT},{tM},{mto},{per},{mils},{lux},{ir},{vis}\n")
+	
+	return True
 
 def getDataForHTMX():
 	ensureExists()
@@ -118,6 +120,8 @@ def on_connect(client, userdata, flags, rc):
 	client.subscribe(RESP_TOPIC)
 
 def on_message(client, userdata, msg):
+	print("Client resp, ", userdata, msg.payload)
+	
 	global response
 	payload = json.loads(msg.payload)
 	# Match the request_id
