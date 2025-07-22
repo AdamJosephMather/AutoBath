@@ -5,7 +5,9 @@ import serial.tools.list_ports as port_list
 def find_clearcore_port():
 	"""Scan for a port whose description mentions ClearCore."""
 	for p in port_list.comports():
+		print("Option: ", p.description)
 		if 'Teknic' in p.description or 'ClearCore' in p.description:
+			print("  Found device")
 			return p.device
 	raise IOError("ClearCore port not found")
 
