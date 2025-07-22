@@ -3,7 +3,7 @@ import json
 import paho.mqtt.client as mqtt
 import SensorReader
 
-BROKER   = "192.168.0.247"
+BROKER   = "192.168.1.247"
 PORT     = 1883
 DEVICEID = "pi-1"
 

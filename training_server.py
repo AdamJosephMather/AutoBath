@@ -101,7 +101,7 @@ import uuid
 import time
 import paho.mqtt.client as mqtt
 
-BROKER   = "192.168.0.247"
+BROKER   = "localhost"
 PORT     = 1883
 DEVICEID = "pi-1"
 
